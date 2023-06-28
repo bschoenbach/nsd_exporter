@@ -1,9 +1,9 @@
-module github.com/optix2000/nsd_exporter
+module github.com/bschoenbach/nsd_exporter
 
 go 1.18
 
 require (
-	github.com/optix2000/go-nsdctl v1.0.0
+	github.com/bschoenbach/go-nsdctl v1.0.0
 	github.com/prometheus/client_golang v1.14.0
 	gopkg.in/yaml.v2 v2.4.0
 )
@@ -20,3 +20,4 @@ require (
 	golang.org/x/sys v0.7.0 // indirect
 	google.golang.org/protobuf v1.30.0 // indirect
 )
+

@@ -11,7 +11,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/optix2000/go-nsdctl"
+	"github.com/bschoenbach/go-nsdctl"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
@@ -26,6 +26,8 @@ var cert = flag.String("cert", "", "Client cert file location. Mutually exclusiv
 var key = flag.String("key", "", "Client key file location. Mutually exclusive with -config-file.")
 var ca = flag.String("ca", "", "Server CA file location. Mutually exclusive with -config-file.")
 var nsdAddr = flag.String("nsd-address", "", "NSD or Unbound control socket address.")
+var timeout = flag.Int("timeout", 10, "The timeout for the go-nsdctl client.")
+var keepAlive = flag.Int("keepAlive", 10, "The keepAlive for the go-nsdctl client.")
 
 // Prom stuff
 var nsdToProm = strings.NewReplacer(".", "_")
@@ -152,7 +154,7 @@ func (c *NSDCollector) updateMetric(s string) error {
 					goto Found
 				}
 			}
-			return fmt.Errorf("Metric ", metricName, " not found in config.")
+			return fmt.Errorf("Metric %s not found in config.", metricName)
 		Found:
 		}
 	}
@@ -181,8 +183,8 @@ func (c *NSDCollector) initMetricsList() error {
 	return s.Err()
 }
 
-func NewNSDCollector(nsdType string, hostString string, caPath string, keyPath string, certPath string, skipVerify bool) (*NSDCollector, error) {
-	client, err := nsdctl.NewClient(nsdType, hostString, caPath, keyPath, certPath, skipVerify)
+func NewNSDCollector(nsdType string, hostString string, caPath string, keyPath string, certPath string, skipVerify bool, timeout int, keepAlive int) (*NSDCollector, error) {
+	client, err := nsdctl.NewClient(nsdType, hostString, caPath, keyPath, certPath, skipVerify, timeout, keepAlive)
 	if err != nil {
 		return nil, err
 	}
@@ -199,8 +201,8 @@ func NewNSDCollector(nsdType string, hostString string, caPath string, keyPath s
 	return collector, err
 }
 
-func NewNSDCollectorFromConfig(path string) (*NSDCollector, error) {
-	client, err := nsdctl.NewClientFromConfig(path)
+func NewNSDCollectorFromConfig(path string, timeout int, keepAlive int) (*NSDCollector, error) {
+	client, err := nsdctl.NewClientFromConfig(path, timeout, keepAlive)
 	if err != nil {
 		return nil, err
 	}
@@ -233,7 +235,7 @@ func main() {
 	if *cert != "" || *key != "" || *ca != "" || *nsdAddr != "" {
 		if *cert != "" && *key != "" && *ca != "" && *nsdAddr != "" {
 			// Build from arguments
-			nsdCollector, err = NewNSDCollector(*nsdType, *nsdAddr, *ca, *key, *cert, false)
+			nsdCollector, err = NewNSDCollector(*nsdType, *nsdAddr, *ca, *key, *cert, false, *timeout, *keepAlive)
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -242,7 +244,7 @@ func main() {
 		}
 	} else {
 		// Build from config
-		nsdCollector, err = NewNSDCollectorFromConfig(*nsdConfig)
+		nsdCollector, err = NewNSDCollectorFromConfig(*nsdConfig, *timeout, *keepAlive)
 		if err != nil {
 			log.Fatal(err)
 		}
