@@ -43,6 +43,12 @@ metrics:
   num.tcp6:
     help: 'number of connections over TCP ip6.'
     type: counter
+  num.tls:
+    help: 'number of connections over TLS ip4. TLS queries are not part of num.tcp.'
+    type: counter
+  num.tls6:
+    help: 'number of connections over TLS ip6. TLS queries are not part of num.tcp6.'
+    type: counter
   num.answer_wo_aa:
     help: 'number of answers with NOERROR rcode and without AA flag, this includes the referrals.'
     type: counter
@@ -54,6 +60,9 @@ metrics:
     type: counter
   num.raxfr:
     help: 'number of AXFR requests from clients (that got served with reply).'
+    type: counter
+  num.rixfr:
+    help: 'number of IXFR requests from clients (that got served with reply).'
     type: counter
   num.truncated:
     help: 'number of answers with TC flag set.'
