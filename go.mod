@@ -3,7 +3,7 @@ module github.com/bschoenbach/nsd_exporter
 go 1.18
 
 require (
-	github.com/bschoenbach/go-nsdctl v1.0.0
+	github.com/bschoenbach/go-nsdctl v1.0.2
 	github.com/prometheus/client_golang v1.14.0
 	gopkg.in/yaml.v2 v2.4.0
 )
