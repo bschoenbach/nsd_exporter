@@ -72,7 +72,7 @@ func (c *NSDCollector) Collect(ch chan<- prometheus.Metric) {
 		prometheus.GaugeValue,
 		1.0)
 
-	s := bufio.NewScanner(r)
+	s := bufio.NewScanner(strings.NewReader(r))
 	for s.Scan() {
 		line := strings.Split(s.Text(), "=")
 		metricName := strings.TrimSpace(line[0])
@@ -173,7 +173,7 @@ func (c *NSDCollector) initMetricsList() error {
 	}
 
 	// Grab metrics
-	s := bufio.NewScanner(r)
+	s := bufio.NewScanner(strings.NewReader(r))
 	for s.Scan() {
 		err = c.updateMetric(s.Text())
 		if err != nil {
