@@ -78,7 +78,7 @@ func (c *NSDCollector) Collect(ch chan<- prometheus.Metric) {
 		metricName := strings.TrimSpace(line[0])
 		m, ok := c.metrics[metricName]
 		if !ok {
-			log.Println("New metric " + metricName + " found. Refreshing.")
+			log.Printf("New metric %s found. Refreshing.", metricName)
 			// Try to update the metrics list
 			err = c.updateMetric(s.Text())
 			if err != nil {
@@ -87,7 +87,7 @@ func (c *NSDCollector) Collect(ch chan<- prometheus.Metric) {
 			// Refetch metric
 			m, ok = c.metrics[metricName]
 			if !ok {
-				log.Println("Metric " + metricName + "not configured. Skipping")
+				log.Printf("Metric %s not configured. Skipping", metricName)
 			}
 			continue
 		}
