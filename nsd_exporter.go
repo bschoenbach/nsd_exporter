@@ -27,7 +27,7 @@ var key = flag.String("key", "", "Client key file location. Mutually exclusive w
 var ca = flag.String("ca", "", "Server CA file location. Mutually exclusive with -config-file.")
 var nsdAddr = flag.String("nsd-address", "", "NSD or Unbound control socket address.")
 var timeout = flag.Int("timeout", 10, "The timeout for the go-nsdctl client.")
-var keepAlive = flag.Int("keepAlive", 10, "The keepAlive for the go-nsdctl client.")
+var keepAlive = flag.Int("keepAlive", -1, "The keepAlive for the go-nsdctl client.")
 
 // Prom stuff
 var nsdToProm = strings.NewReplacer(".", "_")
