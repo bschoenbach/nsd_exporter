@@ -1,6 +1,6 @@
 metrics:
 # NSD Metrics
-# Taken from https://www.nlnetlabs.nl/projects/nsd/nsd-control.8.html "STATISTIC COUNTERS"
+# Taken from https://nsd.docs.nlnetlabs.nl/en/latest/manpages/nsd-control.html#statistics-counters
   num.queries:
     help: 'number of queries received (the tcp and udp queries added up).'
     type: counter
